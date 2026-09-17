@@ -14,7 +14,16 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Supabase Admin Login
+
+1. Copy `.env.example` to `.env.local`.
+2. In Supabase Project Settings, copy the Project URL into `NEXT_PUBLIC_SUPABASE_URL` and the publishable/anon key into `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+3. In Supabase Authentication > Users, create the first admin user with email and password.
+4. Start the app and open [http://localhost:3000/admin/login](http://localhost:3000/admin/login).
+
+The `/admin` route is protected by Supabase session cookies. New users are not created from the public login form; add administrators through the Supabase dashboard. Never put the Supabase service-role key in a `NEXT_PUBLIC_` variable or browser code.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

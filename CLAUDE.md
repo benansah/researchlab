@@ -86,7 +86,7 @@ Public website and admin CMS for the **Centre for Phytomedicine and Natural Prod
 
 ## Status (update this section as work progresses)
 
-Last updated 2026-10-13. Work is on the `site-buildout` branch, which is not pushed (remote: github.com/benansah/researchlab).
+Last updated 2026-10-13. Develop on `site-buildout`. `main` is the GitHub default branch, and Vercel deploys it (remote: github.com/benansah/researchlab). `main` holds everything up to the migration-0004 fix. The shadcn admin rebuild is on `site-buildout` only; it isn't pushed or merged yet. Only merge or push to `main` when asked. Vercel needs `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` set.
 
 Done: labs, physic garden, publications, news and events, search, about, services and contact, the redesigned home page, and admin CRUD for all four content types.
 

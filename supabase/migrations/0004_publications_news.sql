@@ -18,6 +18,62 @@ create table if not exists public.publications (
   updated_at timestamptz not null default now()
 );
 
+-- Some projects already have an older publications table (id, title, authors, year, doi, created_at).
+-- Bring it up to the shape above instead of skipping it.
+alter table public.publications add column if not exists authors text not null default '';
+alter table public.publications add column if not exists venue text not null default '';
+alter table public.publications add column if not exists year integer;
+alter table public.publications add column if not exists tag text not null default '';
+alter table public.publications add column if not exists abstract text not null default '';
+alter table public.publications add column if not exists doi_url text not null default '';
+alter table public.publications add column if not exists pdf_url text not null default '';
+alter table public.publications add column if not exists lab_id uuid references public.labs (id) on delete set null;
+alter table public.publications add column if not exists featured boolean not null default false;
+alter table public.publications add column if not exists published boolean not null default true;
+alter table public.publications add column if not exists created_at timestamptz not null default now();
+alter table public.publications add column if not exists updated_at timestamptz not null default now();
+
+do $$
+declare
+  col record;
+  pol record;
+begin
+  -- The site stores authors as one comma-separated string and the year as a number.
+  select data_type into col from information_schema.columns
+    where table_schema = 'public' and table_name = 'publications' and column_name = 'authors';
+  if col.data_type = 'ARRAY' then
+    alter table public.publications alter column authors drop default;
+    alter table public.publications alter column authors type text using coalesce(array_to_string(authors, ', '), '');
+    alter table public.publications alter column authors set default '';
+  end if;
+  update public.publications set authors = '' where authors is null;
+  alter table public.publications alter column authors set not null;
+
+  select data_type into col from information_schema.columns
+    where table_schema = 'public' and table_name = 'publications' and column_name = 'year';
+  if col.data_type <> 'integer' then
+    alter table public.publications alter column year type integer
+      using nullif(substring(year::text from '\d{4}'), '')::integer;
+  end if;
+
+  -- Carry over links from the old doi column.
+  if exists (select 1 from information_schema.columns
+             where table_schema = 'public' and table_name = 'publications' and column_name = 'doi') then
+    execute $q$
+      update public.publications
+      set doi_url = case when doi ~ '^10\.\d{4,}/' then 'https://doi.org/' || doi else doi end
+      where doi_url = '' and coalesce(doi, '') <> ''
+    $q$;
+  end if;
+
+  -- Replace any policies left from the old table so drafts can't be read publicly.
+  for pol in select policyname from pg_policies where schemaname = 'public' and tablename = 'publications'
+             and policyname not in ('Public can read published publications', 'Admins manage publications') loop
+    execute format('drop policy %I on public.publications', pol.policyname);
+  end loop;
+end;
+$$;
+
 create index if not exists publications_year_idx on public.publications (year desc nulls last, title);
 
 drop trigger if exists publications_touch_updated_at on public.publications;
@@ -64,7 +120,7 @@ drop policy if exists "Admins manage news" on public.news_posts;
 create policy "Admins manage news" on public.news_posts
   for all to authenticated using (true) with check (true);
 
--- Starter content. Everything here is placeholder copy — replace it from /admin/publications and /admin/research-updates.
+-- Starter content. Everything here is placeholder copy — replace it from /admin/publications and /admin/news.
 insert into public.publications (title, authors, venue, year, tag, lab_id, featured)
 select p.title, p.authors, p.venue, p.year, p.tag, (select id from public.labs where slug = p.lab_slug), true
 from (values

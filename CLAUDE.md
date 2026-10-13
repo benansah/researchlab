@@ -70,9 +70,9 @@ Last updated 2026-10-13. Work is on the `site-buildout` branch, which is not pus
 Done: labs, physic garden, publications, news and events, search, about, services and contact, the redesigned home page, and admin CRUD for all four content types.
 
 Outstanding (mostly on the owner's side):
-- [ ] Run `0004_publications_news.sql` in Supabase. As of 2026-10-13 it had not been run, so the site shows fallback publications and news. Migrations 0001–0003 appear to have been run.
-  - The live project already had an older `publications` table (`id, title, authors, year, doi, created_at`). The first version of 0004 failed on it with "column published does not exist". 0004 now upgrades that table in place, which was tested in PGlite against fresh, empty and populated old tables.
-  - There is also an unused old `news` table. The site uses `news_posts`. `news` can be dropped once confirmed empty.
+- [x] All migrations 0001–0004 have been run in Supabase (0004 on 2026-10-13; seed publications and news are live).
+  - The live project had an older, empty `publications` table. 0004 upgrades it in place, which was tested in PGlite against fresh, empty and populated old tables.
+- [ ] There is an unused old `news` table. The site uses `news_posts`. `news` can be dropped once confirmed empty.
 - [ ] Replace the placeholder content via `/admin`: lab leads ("Dr. Harley" etc.), "Student Name" members, the 4 seed publications and the 3 news posts.
 - [ ] Confirm the contact email. `cpnpdd@uhas.edu.gh` is used everywhere; the old contact page used `researchlab@uhas.edu.gh`.
 - [ ] Confirm the services list and the About mission and values copy in `site-content.ts` and `app/about/page.tsx`.

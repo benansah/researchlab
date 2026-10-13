@@ -5,7 +5,7 @@ import BotanicalLineArt from "../components/botanical-line-art";
 import LabMark from "../components/lab-mark";
 import NewsList from "../components/news-list";
 import PublicationList from "../components/publication-list";
-import { Arrow, Eyebrow, FocusIcon, sectionHeading } from "../components/ui";
+import { Arrow, Eyebrow, FocusIcon, sectionHeading } from "../components/site-ui";
 import { getPlants } from "../lib/garden";
 import { getLabs } from "../lib/labs";
 import { getNews, homepageNews } from "../lib/news";

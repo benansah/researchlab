@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "../../components/site-footer";
 import SiteHeader from "../../components/site-header";
-import { Arrow, Eyebrow, PageHero } from "../../components/ui";
+import { Arrow, Eyebrow, PageHero } from "../../components/site-ui";
 import { getLabs } from "../../lib/labs";
 import { centreName, contactEmail, mapUrl, postalAddress } from "../../lib/site-content";
 

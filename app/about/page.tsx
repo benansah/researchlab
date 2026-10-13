@@ -3,7 +3,7 @@ import Link from "next/link";
 import BotanicalLineArt from "../../components/botanical-line-art";
 import SiteFooter from "../../components/site-footer";
 import SiteHeader from "../../components/site-header";
-import { Arrow, Eyebrow, FocusIcon, PageHero, sectionHeading } from "../../components/ui";
+import { Arrow, Eyebrow, FocusIcon, PageHero, sectionHeading } from "../../components/site-ui";
 import { getLabs } from "../../lib/labs";
 import { centreName, centreShortName, focusAreas, institution, school } from "../../lib/site-content";
 

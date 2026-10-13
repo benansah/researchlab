@@ -3,7 +3,7 @@ import Link from "next/link";
 import LabMark from "../../components/lab-mark";
 import SiteFooter from "../../components/site-footer";
 import SiteHeader from "../../components/site-header";
-import { Arrow, PageHero } from "../../components/ui";
+import { Arrow, PageHero } from "../../components/site-ui";
 import { getLabs } from "../../lib/labs";
 
 export const metadata: Metadata = {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "../../components/site-footer";
 import SiteHeader from "../../components/site-header";
-import { Arrow, Eyebrow, PageHero, sectionHeading } from "../../components/ui";
+import { Arrow, Eyebrow, PageHero, sectionHeading } from "../../components/site-ui";
 import { audiences, centreName, contactEmail, services } from "../../lib/site-content";
 
 export const metadata: Metadata = {

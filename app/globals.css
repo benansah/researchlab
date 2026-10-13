@@ -8,8 +8,18 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-league-spartan);
-  --font-mono: var(--font-manrope);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-newsreader), Georgia, serif;
+
+  --color-forest: #0b5d3b;
+  --color-forest-deep: #06301f;
+  --color-leaf: #3fbf78;
+  --color-leaf-light: #a6e9c2;
+  --color-leaf-dark: #128a4f;
+  --color-cream: #f1f6f2;
+  --color-line: #dde7e0;
+  --color-ink: #0e1f17;
+  --color-moss: #4c6157;
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -19,15 +29,32 @@
   }
 } */
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-mono), Arial, Helvetica, sans-serif;
-}
+/* Base element styles live in the base layer so Tailwind utilities can override them. */
+@layer base {
+  html {
+    scroll-padding-top: 110px;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  color: var(--foreground);
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--foreground);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
 }
 
 .admin-auth-page,
@@ -185,7 +212,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .admin-dashboard-intro { padding-top: 82px; }
 .admin-dashboard-intro .admin-kicker { margin-top: 0; }
-.admin-dashboard-grid { display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); padding-bottom: 80px; padding-top: 55px; }
+.admin-dashboard-grid { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); padding-bottom: 80px; padding-top: 55px; }
 
 .admin-dashboard article {
   background: white;
@@ -235,6 +262,49 @@ h1, h2, h3, h4, h5, h6 {
 .admin-editor-side ul { margin: 0; padding-left: 18px; }
 .admin-draft-notice { background: #eef2ed; color: #69746b; font-size: 11px; grid-column: 1 / -1; line-height: 1.5; margin: 0 0 8px; padding: 11px; }
 
+/* Lab profile admin */
+.admin-stack { display: grid; gap: 18px; align-content: start; min-width: 0; }
+.admin-notice { margin: 0; padding: 12px 14px; }
+.admin-success { background: #e3efe2; color: #24502f; font-size: 12px; line-height: 1.5; }
+.admin-notice code { font-size: 11px; }
+.admin-hint { color: #69746b; font-size: 11px; line-height: 1.5; margin: 0; }
+.admin-editor-side-form { align-content: start; }
+.admin-form-heading { align-items: baseline; border-bottom: 1px solid #e3e8e2; color: #203b29; display: flex; font: 400 22px/1.2 Georgia, serif; gap: 10px; margin: 26px 0 4px; padding-bottom: 8px; }
+.admin-form-heading:first-of-type { margin-top: 4px; }
+.admin-form-heading span, .admin-editor-card label span { color: #a96845; font: 400 10px Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.admin-form-row--even { grid-template-columns: 1fr 1fr; }
+.admin-checkbox { align-items: center; display: flex !important; gap: 10px; padding-top: 28px; }
+.admin-checkbox input { accent-color: #31543b; height: 18px; width: 18px !important; }
+.admin-checkbox label { margin: 0 !important; }
+.admin-actions { align-items: center; display: flex; gap: 12px; justify-content: space-between; margin-top: 10px; }
+.admin-actions button { margin-top: 0 !important; }
+.admin-editor-card button.admin-danger, .admin-danger { background: transparent; border: 1px solid #d9b7a8; color: #8a4935; cursor: pointer; font: inherit; font-size: 11px; padding: 10px 14px; }
+.admin-editor-card button.admin-danger:hover, .admin-danger:hover { background: #f5e8e2; }
+
+.admin-lab-list { background: #fff; list-style: none; margin: 0; padding: 0; }
+.admin-lab-list li + li { border-top: 1px solid #e3e8e2; }
+.admin-lab-list li.admin-muted { padding: 22px 24px; }
+.admin-lab-list a { align-items: center; display: flex; gap: 18px; justify-content: space-between; padding: 22px 24px; transition: background .15s; }
+.admin-lab-list a:hover { background: #f6f8f5; }
+.admin-lab-list strong { color: #203b29; display: block; font: 400 24px/1.15 Georgia, serif; }
+.admin-lab-list small { color: #69746b; display: block; font-size: 12px; margin-top: 6px; }
+.admin-lab-meta { align-items: center; color: #31543b; display: flex; flex-shrink: 0; font-size: 11px; gap: 14px; }
+.admin-lab-meta em { background: #f5e8e2; color: #8a4935; font-style: normal; letter-spacing: .1em; padding: 4px 8px; text-transform: uppercase; font-size: 10px; }
+.admin-lab-meta em.is-live { background: #e3efe2; color: #24502f; }
+
+.admin-member-row { border-top: 1px solid #e3e8e2; display: grid; gap: 8px; grid-template-columns: 1fr 1fr; padding: 16px 0; }
+.admin-member-row input { border: 1px solid #cbd4ca; color: #203b29; font: inherit; font-size: 13px; padding: 10px; width: 100%; }
+.admin-member-row input:focus { border-color: #31543b; outline: 2px solid rgba(49, 84, 59, .16); }
+.admin-member-wide { grid-column: 1 / -1; }
+.admin-member-order { max-width: 90px; }
+.admin-member-buttons { align-items: center; display: flex; gap: 8px; justify-content: flex-end; }
+.admin-member-buttons button { margin-top: 0 !important; padding: 10px 14px; font-size: 11px; }
+.admin-member-row--new { background: #f6f8f5; margin: 8px -28px -28px; padding: 22px 28px 28px; }
+.admin-member-row--new .admin-card-index { grid-column: 1 / -1; }
+.admin-side-link { color: #f4f3ed; text-decoration: underline; text-underline-offset: 3px; }
+.admin-side-link:hover { color: #d59a7d; }
+.admin-editor-side { align-self: start; position: sticky; top: 24px; }
+
 @media (max-width: 700px) {
   .admin-auth-card { padding: 30px 24px; }
   .admin-dashboard-grid { grid-template-columns: 1fr; }
@@ -243,6 +313,7 @@ h1, h2, h3, h4, h5, h6 {
   .admin-subnav { margin: 0; order: 3; width: 100%; }
   .admin-editor-grid { display: block; padding-top: 35px; }
   .admin-editor-side { margin-top: 18px; }
-  .admin-form-row { grid-template-columns: 1fr; }
+  .admin-form-row, .admin-form-row--even, .admin-member-row { grid-template-columns: 1fr; }
+  .admin-editor-side { position: static; }
 }
 

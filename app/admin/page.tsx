@@ -27,7 +27,7 @@ export default async function AdminPage() {
         <p className="admin-muted">You are signed in as {user.email}.</p>
       </section>
       <section className="admin-dashboard-grid">
-        <article><span className="admin-card-index">01</span><h2>Research updates</h2><p>Prepare the next story from the lab for publication.</p><Link className="admin-card-link" href="/admin/research-updates">Open workspace ↗</Link></article>
+        <article><span className="admin-card-index">01</span><h2>News &amp; events</h2><p>Share lab news, announcements and upcoming events.</p><Link className="admin-card-link" href="/admin/news">Open workspace ↗</Link></article>
         <article><span className="admin-card-index">02</span><h2>Publications</h2><p>Keep the research record current and easy to explore.</p><Link className="admin-card-link" href="/admin/publications">Open workspace ↗</Link></article>
         <article><span className="admin-card-index">03</span><h2>Lab profiles</h2><p>Update people, focus areas and opportunities.</p><Link className="admin-card-link" href="/admin/lab-profiles">Open workspace ↗</Link></article>
         <article><span className="admin-card-index">04</span><h2>Physic garden</h2><p>Add plants, uses and research links to the garden catalogue.</p><Link className="admin-card-link" href="/admin/garden">Open workspace ↗</Link></article>

@@ -39,9 +39,10 @@ function sortMembers(lab: Lab): Lab {
   return { ...lab, lab_members: [...(lab.lab_members ?? [])].sort((a, b) => a.sort_order - b.sort_order) };
 }
 
-// PostgREST returns PGRST205 when a table does not exist yet (migration not run).
-function isMissingTable(error: { code?: string } | null) {
-  return error?.code === "PGRST205" || error?.code === "42P01";
+// PostgREST returns PGRST205 when a table does not exist yet (migration not run), or
+// PGRST200 when the missing table is queried with an embedded relation such as lab:labs(...).
+export function isMissingTable(error: { code?: string } | null) {
+  return error?.code === "PGRST205" || error?.code === "PGRST200" || error?.code === "42P01";
 }
 
 export async function getLabs(): Promise<Lab[]> {

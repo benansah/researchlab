@@ -7,6 +7,12 @@ const savedMessages: Record<string, string> = {
   "plant-created": "Plant added. Fill in its details, then tick “Published” to show it in the garden catalogue.",
   plant: "Plant saved.",
   "plant-deleted": "Plant deleted.",
+  "publication-created": "Publication added. Fill in its citation, then tick “Published” to show it on the Research page.",
+  publication: "Publication saved.",
+  "publication-deleted": "Publication deleted.",
+  "post-created": "Post created. Write the summary, then tick “Published” to show it on the site.",
+  post: "Post saved.",
+  "post-deleted": "Post deleted.",
 };
 
 export default function AdminNotice({ saved, error }: { saved?: string; error?: string }) {

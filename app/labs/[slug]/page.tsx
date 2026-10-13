@@ -5,7 +5,9 @@ import Avatar from "../../../components/avatar";
 import SiteFooter from "../../../components/site-footer";
 import SiteHeader from "../../../components/site-header";
 import { Arrow, Eyebrow, PageHero, sectionHeading } from "../../../components/ui";
+import PublicationList from "../../../components/publication-list";
 import { getLab, getLabs } from "../../../lib/labs";
+import { getPublications } from "../../../lib/publications";
 
 // Static class names so Tailwind can see them.
 const factColumns: Record<number, string> = { 1: "lg:grid-cols-1", 2: "lg:grid-cols-2", 3: "lg:grid-cols-3", 4: "lg:grid-cols-4" };
@@ -17,9 +19,10 @@ export async function generateMetadata(props: PageProps<"/labs/[slug]">): Promis
 
 export default async function LabPage(props: PageProps<"/labs/[slug]">) {
   const { slug } = await props.params;
-  const [lab, allLabs] = await Promise.all([getLab(slug), getLabs()]);
+  const [lab, allLabs, publications] = await Promise.all([getLab(slug), getLabs(), getPublications().catch(() => [])]);
   if (!lab) notFound();
 
+  const labPublications = publications.filter((pub) => pub.lab?.slug === lab.slug);
   const otherLabs = allLabs.filter((other) => other.slug !== lab.slug);
   const contact = lab.contact_email || lab.lead_email;
   const facts = [
@@ -152,6 +155,22 @@ export default async function LabPage(props: PageProps<"/labs/[slug]">) {
             )}
           </div>
         </section>
+
+        {/* Publications */}
+        {labPublications.length > 0 && (
+          <section className="mx-auto max-w-7xl px-6 pt-20 lg:px-10 lg:pt-28">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <Eyebrow>Publications</Eyebrow>
+                <h2 className={`mt-5 ${sectionHeading}`}>Selected work from the lab</h2>
+              </div>
+              <Link href="/research#publications" className="group inline-flex items-center gap-2 text-sm font-semibold text-leaf-dark hover:text-forest">
+                All Centre publications <Arrow />
+              </Link>
+            </div>
+            <div className="mt-10"><PublicationList publications={labPublications} /></div>
+          </section>
+        )}
 
         {/* Join + other labs */}
         <section className="mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-28">

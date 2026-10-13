@@ -3,16 +3,17 @@ import SiteHeader from "../components/site-header";
 import SiteFooter from "../components/site-footer";
 import BotanicalLineArt from "../components/botanical-line-art";
 import LabMark from "../components/lab-mark";
-import { Arrow, Eyebrow, sectionHeading } from "../components/ui";
+import NewsList from "../components/news-list";
+import PublicationList from "../components/publication-list";
+import { Arrow, Eyebrow, FocusIcon, sectionHeading } from "../components/ui";
+import { getPlants } from "../lib/garden";
 import { getLabs } from "../lib/labs";
-import { focusAreas, news, publications, stats } from "../lib/site-content";
+import { getNews, homepageNews } from "../lib/news";
+import { featured, getPublications } from "../lib/publications";
+import { focusAreas } from "../lib/site-content";
 
-const icons: Record<string, React.ReactNode> = {
-  leaf: <path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14m0 0 7-7" />,
-  flask: <path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3M7.5 15h9" />,
-  capsule: <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7ZM8.5 8.5l7 7" />,
-  shield: <path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.3 7.5 9.5 4.3-1.2 7.5-5 7.5-9.5V6L12 3Zm-3 9 2 2 4-4" />,
-};
+// Static class names so Tailwind can see them.
+const statColumns: Record<number, string> = { 1: "lg:grid-cols-1", 2: "lg:grid-cols-2", 3: "lg:grid-cols-3", 4: "lg:grid-cols-4" };
 
 function HeroArt() {
   return (
@@ -27,7 +28,20 @@ function HeroArt() {
 }
 
 export default async function Home() {
-  const labs = await getLabs().catch(() => []);
+  // Each section hides itself rather than taking the home page down if its data fails to load.
+  const [labs, plants, publications, posts] = await Promise.all([
+    getLabs().catch(() => []),
+    getPlants().catch(() => []),
+    getPublications().catch(() => []),
+    getNews().catch(() => []),
+  ]);
+  const people = labs.reduce((total, lab) => total + lab.lab_members.length + (lab.lead_name ? 1 : 0), 0);
+  const stats = [
+    { value: plants.length, label: "Medicinal plant species in the Physic Garden" },
+    { value: publications.length, label: "Peer-reviewed publications" },
+    { value: people, label: "Researchers & students" },
+    { value: labs.length, label: labs.length === 1 ? "Research lab" : "Research labs" },
+  ].filter((stat) => stat.value > 0);
 
   return (
     <>
@@ -59,9 +73,10 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Stats strip */}
+        {/* Stats strip — counted from the live data so the figures can't drift */}
+        {stats.length > 0 && (
         <section aria-label="The Centre in numbers" className="relative z-10 mx-auto -mt-16 max-w-6xl px-6 lg:px-10">
-          <dl className="grid grid-cols-2 bg-white shadow-[0_30px_60px_-30px_rgba(6,48,31,.35)] ring-1 ring-line lg:grid-cols-4">
+          <dl className={`grid grid-cols-2 bg-white shadow-[0_30px_60px_-30px_rgba(6,48,31,.35)] ring-1 ring-line ${statColumns[stats.length] ?? "lg:grid-cols-4"}`}>
             {stats.map((s, i) => (
               <div key={s.label} className={`px-6 py-8 sm:px-8 ${i > 0 ? "lg:border-l" : ""} ${i % 2 ? "border-l" : ""} ${i > 1 ? "border-t lg:border-t-0" : ""} border-line`}>
                 <dt className="sr-only">{s.label}</dt>
@@ -71,6 +86,7 @@ export default async function Home() {
             ))}
           </dl>
         </section>
+        )}
 
         {/* Focus areas */}
         <section className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
@@ -90,14 +106,12 @@ export default async function Home() {
             {focusAreas.map((area, i) => (
               <Link
                 key={area.title}
-                href="/research"
+                href={`/research#${area.id}`}
                 className="group relative flex flex-col bg-white p-8 transition-colors duration-300 hover:bg-forest"
               >
                 <span className="text-xs font-semibold tabular-nums tracking-[.08em] text-moss/60 group-hover:text-leaf-light">0{i + 1}</span>
                 <span className="mt-8 flex h-14 w-14 items-center justify-center rounded-full bg-cream text-forest transition-colors group-hover:bg-white/10 group-hover:text-leaf-light">
-                  <svg aria-hidden viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    {icons[area.icon]}
-                  </svg>
+                  <FocusIcon name={area.icon} />
                 </span>
                 <h3 className="mt-6 font-display text-[1.45rem] font-medium leading-tight text-ink group-hover:text-white">{area.title}</h3>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-moss group-hover:text-white/70">{area.body}</p>
@@ -110,6 +124,7 @@ export default async function Home() {
         </section>
 
         {/* Publications */}
+        {publications.length > 0 && (
         <section id="publications" className="bg-cream">
           <div className="mx-auto grid max-w-7xl gap-14 px-6 py-24 lg:grid-cols-[1fr_2fr] lg:px-10 lg:py-28">
             <div className="lg:sticky lg:top-40 lg:self-start">
@@ -123,31 +138,10 @@ export default async function Home() {
               </Link>
             </div>
 
-            <ol className="divide-y divide-line border-y border-line">
-              {publications.map((pub, i) => (
-                <li key={pub.title} className="group grid gap-x-6 gap-y-3 py-7 sm:grid-cols-[auto_1fr_auto]">
-                  <span className="font-display text-3xl font-medium text-leaf">{String(i + 1).padStart(2, "0")}</span>
-                  <div>
-                    <span className="inline-block bg-white px-2.5 py-1 text-xs font-semibold uppercase tracking-[.09em] text-leaf-dark ring-1 ring-line">
-                      {pub.tag}
-                    </span>
-                    <h3 className="mt-3 font-display text-xl font-medium leading-snug text-ink transition-colors group-hover:text-forest">{pub.title}</h3>
-                    <p className="mt-2 text-sm text-moss">
-                      {pub.authors} · <em>{pub.venue}</em>, {pub.year}
-                    </p>
-                  </div>
-                  <div className="flex items-start gap-2 sm:pt-9">
-                    {["DOI", "PDF"].map((label) => (
-                      <a key={label} href="#" className="border border-line bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-[.09em] text-forest transition-colors hover:border-forest hover:bg-forest hover:text-white">
-                        {label}
-                      </a>
-                    ))}
-                  </div>
-                </li>
-              ))}
-            </ol>
+            <PublicationList publications={featured(publications, 4)} />
           </div>
         </section>
+        )}
 
         {/* Labs */}
         {labs.length > 0 && (
@@ -211,23 +205,16 @@ export default async function Home() {
             <div>
               <Eyebrow>Lab news &amp; events</Eyebrow>
               <h2 className={`mt-5 ${sectionHeading}`}>What&rsquo;s happening</h2>
-              <ul className="mt-10 divide-y divide-line border-t border-line">
-                {news.map((item) => (
-                  <li key={item.title}>
-                    <Link href="#" className="group grid gap-4 py-7 sm:grid-cols-[140px_1fr_auto] sm:items-start">
-                      <div>
-                        <p className={`text-xs font-semibold uppercase tracking-[.09em] ${item.kind === "Event" ? "text-amber-700" : "text-leaf-dark"}`}>{item.kind}</p>
-                        <p className="mt-1 text-sm text-moss">{item.date}</p>
-                      </div>
-                      <div>
-                        <h3 className="font-display text-xl font-medium leading-snug text-ink transition-colors group-hover:text-forest">{item.title}</h3>
-                        <p className="mt-2 text-[15px] leading-relaxed text-moss">{item.body}</p>
-                      </div>
-                      <span className="hidden text-leaf-dark sm:block sm:pt-1.5"><Arrow /></span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {posts.length > 0 ? (
+                <div className="mt-10">
+                  <NewsList posts={homepageNews(posts, 3)} />
+                  <Link href="/news" className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-leaf-dark hover:text-forest">
+                    All news &amp; events <Arrow />
+                  </Link>
+                </div>
+              ) : (
+                <p className="mt-10 text-lg text-moss">News from the Centre will appear here soon.</p>
+              )}
             </div>
 
             <aside id="join" className="relative flex flex-col justify-between overflow-hidden bg-cream p-9 ring-1 ring-line lg:mt-[7.5rem]">

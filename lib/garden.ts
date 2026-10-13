@@ -1,3 +1,4 @@
+import { isMissingTable } from "./labs";
 import { createClient } from "./supabase/server";
 
 export type GardenPlant = {
@@ -44,8 +45,7 @@ export async function getPlants(): Promise<GardenPlant[]> {
     .order("sort_order")
     .order("botanical_name");
   if (error) {
-    // PGRST205: the table does not exist yet (migration not run).
-    if (error.code === "PGRST205" || error.code === "42P01") return fallbackPlants;
+    if (isMissingTable(error)) return fallbackPlants;
     throw new Error(`Could not load garden plants: ${error.message}`);
   }
   return (data as GardenPlant[]).map(normalise);

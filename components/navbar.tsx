@@ -188,7 +188,7 @@ export default function Navbar({ labLinks = [] }: { labLinks?: NavChild[] }) {
             </button>
 
             <form
-              action="/research"
+              action="/search"
               role="search"
               className={`absolute right-0 top-full flex w-full max-w-xl origin-top-right border-t-[3px] border-leaf bg-white p-3 shadow-[0_18px_40px_-16px_rgba(6,48,31,.35)] transition-all duration-200 ${
                 searchOpen ? "visible scale-100 opacity-100" : "invisible scale-95 opacity-0"
@@ -229,7 +229,7 @@ export default function Navbar({ labLinks = [] }: { labLinks?: NavChild[] }) {
               <CloseIcon />
             </button>
           </div>
-          <form action="/research" role="search" className="flex border-b border-line bg-cream p-4">
+          <form action="/search" role="search" className="flex border-b border-line bg-cream p-4">
             <label htmlFor="mobile-search" className="sr-only">Search the site</label>
             <input id="mobile-search" name="q" placeholder="Search…" className="min-w-0 flex-1 bg-white px-3 py-2.5 text-[15px] outline-none focus:ring-2 focus:ring-leaf" />
             <button type="submit" aria-label="Search" className="bg-forest px-3.5 text-white"><SearchIcon /></button>

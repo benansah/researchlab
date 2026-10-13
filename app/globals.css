@@ -288,7 +288,8 @@
 .admin-lab-list a:hover { background: #f6f8f5; }
 .admin-lab-list strong { color: #203b29; display: block; font: 400 24px/1.15 Georgia, serif; }
 .admin-lab-list small { color: #69746b; display: block; font-size: 12px; margin-top: 6px; }
-.admin-lab-meta { align-items: center; color: #31543b; display: flex; flex-shrink: 0; font-size: 11px; gap: 14px; }
+.admin-lab-list strong.admin-list-title { font-size: 18px; line-height: 1.3; }
+.admin-lab-meta {align-items: center; color: #31543b; display: flex; flex-shrink: 0; font-size: 11px; gap: 14px; }
 .admin-lab-meta em { background: #f5e8e2; color: #8a4935; font-style: normal; letter-spacing: .1em; padding: 4px 8px; text-transform: uppercase; font-size: 10px; }
 .admin-lab-meta em.is-live { background: #e3efe2; color: #24502f; }
 

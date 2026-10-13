@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { centreName, institution, navItems, school } from "../lib/site-content";
+import { centreName, contactEmail, institution, navItems, postalAddress, school } from "../lib/site-content";
 
 export default function SiteFooter() {
   return (
@@ -35,8 +35,8 @@ export default function SiteFooter() {
         <div>
           <h2 className="font-sans text-xs font-semibold uppercase tracking-[.09em] text-leaf-light">Contact</h2>
           <address className="mt-5 space-y-2.5 text-[15px] not-italic leading-relaxed">
-            <p>{school}<br />{institution}<br />PMB 31, Ho, Volta Region, Ghana</p>
-            <p><a href="mailto:cpnpdd@uhas.edu.gh" className="transition-colors hover:text-white">cpnpdd@uhas.edu.gh</a></p>
+            <p>{postalAddress.map((line, i) => <span key={line}>{i > 0 && <br />}{line}</span>)}</p>
+            <p><a href={`mailto:${contactEmail}`} className="transition-colors hover:text-white">{contactEmail}</a></p>
           </address>
         </div>
       </div>

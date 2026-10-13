@@ -65,7 +65,7 @@ Public website and admin CMS for the **Centre for Phytomedicine and Natural Prod
 
 ## Status (update this section as work progresses)
 
-Last updated 2026-10-13. Work is on the `site-buildout` branch, which is not pushed (remote: github.com/benansah/researchlab).
+Last updated 2026-10-13. `main` is the GitHub default branch, and Vercel deploys it (remote: github.com/benansah/researchlab). `site-buildout` was merged into it. `master` and `emma` are stale: `master` holds only the create-next-app template, and `emma` holds only GitHub's placeholder README. Vercel needs `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` set, or every page returns a 500 error.
 
 Done: labs, physic garden, publications, news and events, search, about, services and contact, the redesigned home page, and admin CRUD for all four content types.
 
@@ -77,4 +77,5 @@ Outstanding (mostly on the owner's side):
 - [ ] Confirm the contact email. `cpnpdd@uhas.edu.gh` is used everywhere; the old contact page used `researchlab@uhas.edu.gh`.
 - [ ] Confirm the services list and the About mission and values copy in `site-content.ts` and `app/about/page.tsx`.
 - [ ] Admin publication and news pages have not been click-tested while signed in.
-- [ ] Merge or push `site-buildout` when ready.
+- [x] Merged into `main` and pushed (2026-10-13).
+- [ ] Confirm the Vercel deploy works, with env vars set and a redeploy done after the merge.

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import NewsList from "../../components/news-list";
 import SiteFooter from "../../components/site-footer";
 import SiteHeader from "../../components/site-header";
-import { Eyebrow, PageHero, sectionHeading } from "../../components/ui";
+import { Eyebrow, PageHero, sectionHeading } from "../../components/site-ui";
 import { getNews, isUpcoming } from "../../lib/news";
 import { centreName } from "../../lib/site-content";
 

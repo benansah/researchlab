@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "../../components/site-footer";
 import SiteHeader from "../../components/site-header";
-import { Arrow, PageHero } from "../../components/ui";
+import { Arrow, PageHero } from "../../components/site-ui";
 import { getPlants } from "../../lib/garden";
 import { getLabs } from "../../lib/labs";
 import { formatPostDate, getNews } from "../../lib/news";

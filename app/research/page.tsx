@@ -3,7 +3,7 @@ import Link from "next/link";
 import PublicationList from "../../components/publication-list";
 import SiteFooter from "../../components/site-footer";
 import SiteHeader from "../../components/site-header";
-import { Arrow, Eyebrow, FocusIcon, PageHero, sectionHeading } from "../../components/ui";
+import { Arrow, Eyebrow, FocusIcon, PageHero, sectionHeading } from "../../components/site-ui";
 import { getLabs } from "../../lib/labs";
 import { getPublications } from "../../lib/publications";
 import { centreName, focusAreas } from "../../lib/site-content";

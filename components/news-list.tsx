@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { formatPostDate, type NewsPost } from "../lib/news";
-import { Arrow } from "./ui";
+import { Arrow } from "./site-ui";
 
 export default function NewsList({ posts }: { posts: NewsPost[] }) {
   return (

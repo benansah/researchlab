@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteFooter from "../../../components/site-footer";
 import SiteHeader from "../../../components/site-header";
-import { Arrow, PageHero } from "../../../components/ui";
+import { Arrow, PageHero } from "../../../components/site-ui";
 import { formatPostDate, getNews, getNewsPost, isUpcoming } from "../../../lib/news";
 import { centreName } from "../../../lib/site-content";
 

@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type { GardenPlant } from "../lib/garden";
 import BotanicalLineArt from "./botanical-line-art";
+import ShareButton from "./share-button";
+
+const roundButton = "flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-forest shadow-sm transition-transform hover:scale-110";
 
 const badgeColors = ["#2e8b57", "#7a4fc9", "#b8860b", "#16897a", "#cc3d6a", "#d4622a", "#2f6bc9", "#8d44b8"];
 
@@ -63,19 +66,22 @@ export default function PlantCard({ plant, index = 0, saved, onToggleSave }: {
             {plant.category}
           </span>
         )}
-        {onToggleSave && (
-          <button
-            type="button"
-            onClick={onToggleSave}
-            aria-pressed={saved}
-            aria-label={saved ? `Remove ${name} from saved plants` : `Save ${name}`}
-            className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-forest shadow-sm transition-transform hover:scale-110"
-          >
-            <svg aria-hidden viewBox="0 0 24 24" className={`h-[18px] w-[18px] ${saved ? "fill-[#cc3d6a] text-[#cc3d6a]" : "fill-none"}`} stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
-              <path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2Z" />
-            </svg>
-          </button>
-        )}
+        <div className="absolute right-5 top-5 flex gap-2">
+          {onToggleSave && (
+            <button
+              type="button"
+              onClick={onToggleSave}
+              aria-pressed={saved}
+              aria-label={saved ? `Remove ${name} from saved plants` : `Save ${name}`}
+              className={roundButton}
+            >
+              <svg aria-hidden viewBox="0 0 24 24" className={`h-[18px] w-[18px] ${saved ? "fill-[#cc3d6a] text-[#cc3d6a]" : "fill-none"}`} stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+                <path d="M12 20.5s-7.5-4.6-9.3-9.2C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.6 3.4 4.3 6.8-1.8 4.6-9.3 9.2-9.3 9.2Z" />
+              </svg>
+            </button>
+          )}
+          <ShareButton path={`/physicgarden/${plant.slug}`} title={name} text={`${name} (${plant.botanical_name}) in the CPNPDD Physic Garden`} className={roundButton} />
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col px-5 pb-5 pt-4">

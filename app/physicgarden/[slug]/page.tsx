@@ -10,7 +10,13 @@ export async function generateMetadata(props: PageProps<"/physicgarden/[slug]">)
   const plant = await getPlant((await props.params).slug);
   if (!plant) return {};
   const name = plant.common_name ? `${plant.common_name} (${plant.botanical_name})` : plant.botanical_name;
-  return { title: `${name} · Physic Garden`, description: plant.description || undefined };
+  const description = plant.description || undefined;
+  // Shared links (WhatsApp, Facebook, …) preview with the plant's photo.
+  return {
+    title: `${name} · Physic Garden`,
+    description,
+    openGraph: { title: name, description, type: "article", images: plant.photo_url ? [{ url: plant.photo_url, alt: name }] : undefined },
+  };
 }
 
 export default async function PlantPage(props: PageProps<"/physicgarden/[slug]">) {
